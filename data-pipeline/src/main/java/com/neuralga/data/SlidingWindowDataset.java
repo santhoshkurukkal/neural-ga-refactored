@@ -87,6 +87,10 @@ public class SlidingWindowDataset {
     public int getPredictionHorizon() { return predictionHorizon; }
     public int getStride() { return stride; }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private int inputWindow = 5;
         private int predictionHorizon = 1;

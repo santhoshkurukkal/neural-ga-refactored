@@ -16,10 +16,9 @@ class ConfigLoaderTest {
     void shouldLoadTrainingConfigFromYaml() {
         Path configFile = tempDir.resolve("test-training.yaml");
         String yaml = """
-            neural:
+            training:
               input_window: 10
               prediction_horizon: 2
-            training:
               epochs: 200
               learning_rate: 0.001
             """;
@@ -40,12 +39,13 @@ class ConfigLoaderTest {
     void shouldLoadGAConfigFromYaml() {
         Path configFile = tempDir.resolve("test-ga.yaml");
         String yaml = """
-            population_size: 100
-            generations: 200
-            crossover_operator: "UNIFORM"
-            mutation_operator: "POLYNOMIAL"
-            termination:
-              max_generations: 200
+            ga:
+              population_size: 100
+              generations: 200
+              crossover_operator: "UNIFORM"
+              mutation_operator: "POLYNOMIAL"
+              termination:
+                max_generations: 200
             """;
         writeFile(configFile, yaml);
 
@@ -62,8 +62,9 @@ class ConfigLoaderTest {
     void shouldLoadCascadeConfigFromYaml() {
         Path configFile = tempDir.resolve("test-cascade.yaml");
         String yaml = """
-            error_threshold: 0.1
-            max_cascade_iterations: 5
+            cascade:
+              error_threshold: 0.1
+              max_cascade_iterations: 5
             """;
         writeFile(configFile, yaml);
 
@@ -77,16 +78,18 @@ class ConfigLoaderTest {
     void shouldLoadAppConfigFromYaml() {
         Path configFile = tempDir.resolve("test-app.yaml");
         String yaml = """
-            data_dir: "custom/data"
-            models_dir: "custom/models"
-            random_seed: 12345
+            app:
+              data_dir: "custom/data"
+              models_dir: "custom/models"
+              random_seed: 12345
             """;
         writeFile(configFile, yaml);
 
         AppConfig config = ConfigLoader.loadAppConfig(configFile.toString());
 
-        assertThat(config.getDataDir().toString()).isEqualTo("custom/data");
-        assertThat(config.getModelsDir().toString()).isEqualTo("custom/models");
+        // Path uses system separator
+        assertThat(config.getDataDir().toString()).isEqualTo("custom/data".replace("/", java.io.File.separator));
+        assertThat(config.getModelsDir().toString()).isEqualTo("custom/models".replace("/", java.io.File.separator));
         assertThat(config.getRandomSeed()).isEqualTo(12345L);
     }
 

@@ -17,12 +17,15 @@ public class Layer {
     @JsonCreator
     public Layer(
             @JsonProperty("neurons") Neuron[] neurons,
-            @JsonProperty("activation") String activationName
+            @JsonProperty("activation") String activationName,
+            @JsonProperty("inputSize") int inputSize
     ) {
         this.neurons = neurons != null ? neurons : new Neuron[0];
         this.activation = ActivationFunction.fromString(activationName);
         this.random = new Random();
         this.outputs = new double[this.neurons.length];
+        // If neurons array is empty but inputSize is provided, we can't fully reconstruct
+        // but at least we have the inputSize info
     }
 
     public Layer(int numNeurons, int inputSize, ActivationFunction activation, long seed) {
@@ -89,8 +92,17 @@ public class Layer {
 
     public double[] getOutputs() { return outputs.clone(); }
     public Neuron[] getNeurons() { return neurons; }
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public int getSize() { return neurons.length; }
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public int getInputSize() { return neurons.length > 0 ? neurons[0].getInputSize() : 0; }
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public void setInputSize(int inputSize) {
+        // Only used for deserialization
+    }
     public ActivationFunction getActivation() { return activation; }
 
     public double[][] getWeightsMatrix() {

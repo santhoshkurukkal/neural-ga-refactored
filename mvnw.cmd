@@ -27,7 +27,7 @@ REM Java command
 if "%JAVA_HOME%"=="" (
   set JAVACMD=java
 ) else (
-  set JAVACMD="%JAVA_HOME%\bin\java.exe"
+  set "JAVACMD=%JAVA_HOME%\bin\java.exe"
 )
 
 REM Wrapper jar

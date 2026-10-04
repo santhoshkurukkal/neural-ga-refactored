@@ -1,9 +1,11 @@
 package com.neuralga.data;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import static org.assertj.core.api.Assertions.*;
 class CsvTimeseriesReaderTest {
 
     @Test
-    void shouldReadSimpleCsvFile(@io.TempDir Path tempDir) {
+    void shouldReadSimpleCsvFile(@TempDir Path tempDir) throws IOException {
         Path file = tempDir.resolve("test.csv");
         java.nio.file.Files.writeString(file, "1.0\n2.0\n3.0\n4.0\n5.0\n");
 
@@ -23,7 +25,7 @@ class CsvTimeseriesReaderTest {
     }
 
     @Test
-    void shouldSkipCommentsAndEmptyLines(@io.TempDir Path tempDir) {
+    void shouldSkipCommentsAndEmptyLines(@TempDir Path tempDir) throws IOException {
         Path file = tempDir.resolve("test.csv");
         java.nio.file.Files.writeString(file, "# Comment\n1.0\n\n2.0\n# Another\n3.0\n");
 
@@ -34,7 +36,7 @@ class CsvTimeseriesReaderTest {
     }
 
     @Test
-    void shouldReadCsvWithHeader(@io.TempDir Path tempDir) {
+    void shouldReadCsvWithHeader(@TempDir Path tempDir) throws IOException {
         Path file = tempDir.resolve("test.csv");
         java.nio.file.Files.writeString(file, "value,timestamp\n1.0,1\n2.0,2\n3.0,3\n");
 
@@ -45,7 +47,7 @@ class CsvTimeseriesReaderTest {
     }
 
     @Test
-    void shouldReadMultiColumnCsv(@io.TempDir Path tempDir) {
+    void shouldReadMultiColumnCsv(@TempDir Path tempDir) throws IOException {
         Path file = tempDir.resolve("test.csv");
         java.nio.file.Files.writeString(file, "timestamp,value,label\n1,10.5,A\n2,20.3,B\n3,30.1,C\n");
 
@@ -56,7 +58,7 @@ class CsvTimeseriesReaderTest {
     }
 
     @Test
-    void shouldThrowOnEmptyFile(@io.TempDir Path tempDir) {
+    void shouldThrowOnEmptyFile(@TempDir Path tempDir) throws IOException {
         Path file = tempDir.resolve("empty.csv");
         java.nio.file.Files.writeString(file, "");
 

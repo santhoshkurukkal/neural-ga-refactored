@@ -1,7 +1,7 @@
 package com.neuralga.pipeline;
 
+import com.neuralga.data.DataNormalizer;
 import com.neuralga.neural.CascadeCorrelationNetwork;
-import com.neuralga.neural.DataNormalizer;
 import com.neuralga.neural.NetworkSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -37,7 +37,9 @@ class LayerTest {
     void shouldBackwardOutputLayer() {
         Layer layer = new Layer(2, 2, ActivationFunction.LINEAR, 42);
         double[][] weights = {{1.0, 0.0}, {0.0, 1.0}};
+        double[] biases = {0.0, 0.0};
         layer.setWeightsMatrix(weights);
+        layer.setBiases(biases);
 
         double[] input = {1.0, 1.0};
         layer.forward(input); // output = [1, 1]

@@ -48,6 +48,10 @@ public class Chromosome {
 
     public boolean isEvaluated() { return evaluated; }
 
+    public void setEvaluated(boolean evaluated) {
+        this.evaluated = evaluated;
+    }
+
     public Chromosome copy() {
         return new Chromosome(genes, fitness);
     }

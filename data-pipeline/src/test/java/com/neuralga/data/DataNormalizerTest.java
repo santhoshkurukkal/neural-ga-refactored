@@ -46,13 +46,17 @@ class DataNormalizerTest {
     @Test
     void shouldNormalizeWithRobust() {
         // Data with outliers
-        List<Double> data = List.of(1.0, 2.0, 3.0, 4.0, 5.0, 100.0); // median=3.5, Q1=2, Q3=5
+        // Sorted: [1.0, 2.0, 3.0, 4.0, 5.0, 100.0]
+        // median = (3+4)/2 = 3.5
+        // Q1 (25th percentile): index = 0.25 * 5 = 1.25, between 2.0 and 3.0 = 2.25
+        // Q3 (75th percentile): index = 0.75 * 5 = 3.75, between 4.0 and 5.0 = 4.75
+        List<Double> data = List.of(1.0, 2.0, 3.0, 4.0, 5.0, 100.0);
         DataNormalizer normalizer = new DataNormalizer(DataNormalizer.Method.ROBUST);
         normalizer.fit(data);
 
         assertThat(normalizer.getMedian()).isEqualTo(3.5);
-        assertThat(normalizer.getQ1()).isEqualTo(2.0);
-        assertThat(normalizer.getQ3()).isEqualTo(5.0);
+        assertThat(normalizer.getQ1()).isEqualTo(2.25);
+        assertThat(normalizer.getQ3()).isEqualTo(4.75);
 
         // Outlier should be compressed
         double normalizedOutlier = normalizer.normalize(100.0);

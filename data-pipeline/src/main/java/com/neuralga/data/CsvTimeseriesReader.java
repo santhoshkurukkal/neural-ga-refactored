@@ -85,5 +85,9 @@ public class CsvTimeseriesReader implements TimeseriesDataSource {
         public DataLoadingException(String message, Throwable cause) {
             super(message, cause);
         }
+
+        public DataLoadingException(String message) {
+            super(message);
+        }
     }
 }

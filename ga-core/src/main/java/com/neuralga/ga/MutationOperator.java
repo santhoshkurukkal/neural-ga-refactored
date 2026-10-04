@@ -29,7 +29,7 @@ public interface MutationOperator {
                 chromosome.setGene(i, chromosome.getGene(i) + random.nextGaussian() * stdDev);
             }
             chromosome.setFitness(0);
-            chromosome.evaluated = false;
+            chromosome.setEvaluated(false);
         }
     }
 
@@ -56,7 +56,7 @@ public interface MutationOperator {
                 }
             }
             chromosome.setFitness(0);
-            chromosome.evaluated = false;
+            chromosome.setEvaluated(false);
         }
     }
 }

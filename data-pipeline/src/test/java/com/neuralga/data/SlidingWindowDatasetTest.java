@@ -108,8 +108,9 @@ class SlidingWindowDatasetTest {
         List<double[]> inputs = dataset.getInputs();
         List<double[]> targets = dataset.getTargets();
 
-        assertThat(inputs).hasSize(6);
-        assertThat(targets).hasSize(6);
+        // With 10 data points, inputWindow=3, horizon=1: maxStart = 10 - 3 - 1 + 1 = 7
+        assertThat(inputs).hasSize(7);
+        assertThat(targets).hasSize(7);
 
         // Verify immutability
         assertThatThrownBy(() -> inputs.add(new double[3]))

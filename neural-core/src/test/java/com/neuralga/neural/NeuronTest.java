@@ -70,7 +70,7 @@ class NeuronTest {
         original.setWeightsAndBias(new double[]{0.1, 0.2, 0.3}, 0.05);
 
         // Create new neuron from saved params
-        Neuron restored = new Neuron(original.getWeights(), original.getBias(), original.getActivation().name());
+        Neuron restored = new Neuron(original.getWeights(), original.getBias(), original.getActivation().name(), original.getInputSize());
 
         assertThat(restored.getWeights()).isEqualTo(original.getWeights());
         assertThat(restored.getBias()).isEqualTo(original.getBias());

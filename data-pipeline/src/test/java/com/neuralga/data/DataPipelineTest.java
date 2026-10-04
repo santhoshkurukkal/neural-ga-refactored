@@ -5,6 +5,7 @@ import com.neuralga.config.TrainingConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -16,12 +17,19 @@ class DataPipelineTest {
     Path tempDir;
 
     @Test
-    void shouldLoadAndPrepareData() {
-        // Create test data file
+    void shouldLoadAndPrepareData() throws IOException {
+        // Create test data file with enough data for validation/test splits
         Path dataDir = tempDir.resolve("data");
         dataDir.toFile().mkdirs();
         Path dataFile = dataDir.resolve("test.csv");
-        java.nio.file.Files.writeString(dataFile, "1.0\n2.0\n3.0\n4.0\n5.0\n6.0\n7.0\n8.0\n9.0\n10.0\n");
+        // Need enough data for: train + val + test splits, each needing inputWindow + predictionHorizon samples
+        // With inputWindow=3, horizon=1, need at least 4 per split. With 0.2+0.2=0.4 splits, need 4/0.4 = 10 per split
+        // So need at least 40 total samples
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= 100; i++) {
+            sb.append(i).append(".0\n");
+        }
+        java.nio.file.Files.writeString(dataFile, sb.toString());
 
         // Config
         TrainingConfig trainingConfig = new TrainingConfig();
@@ -76,10 +84,12 @@ class DataPipelineTest {
     }
 
     @Test
-    void shouldSaveSyntheticData() {
+    void shouldSaveSyntheticData() throws IOException {
         TrainingConfig trainingConfig = new TrainingConfig();
         AppConfig appConfig = new AppConfig();
-        appConfig.setDataDir(tempDir.resolve("data").toString());
+        Path dataDir = tempDir.resolve("data");
+        dataDir.toFile().mkdirs();
+        appConfig.setDataDir(dataDir.toString());
 
         DataPipeline pipeline = new DataPipeline(trainingConfig, appConfig);
         pipeline.generateSyntheticData(SyntheticDataGenerator.DataType.SINE, 50, 0.0)

@@ -46,12 +46,13 @@ public class GeneticAlgorithm {
         stagnationCounter = 0;
         lastBestFitness = Double.NEGATIVE_INFINITY;
 
-        // Initialize population
-        int chromosomeLength = estimateChromosomeLength();
-        population = new Population(config.getPopulationSize(), chromosomeLength, config.getRandomSeed());
+        // Initialize population - chromosome length must be set via setChromosomeLength() before run()
+        if (population == null) {
+            throw new IllegalStateException("Chromosome length not set. Call setChromosomeLength() before run().");
+        }
 
         log.info("Starting GA: popSize={}, generations={}, chromosomeLength={}",
-                config.getPopulationSize(), config.getGenerations(), chromosomeLength);
+                config.getPopulationSize(), config.getGenerations(), population.get(0).getLength());
 
         notifyGenerationStart();
 

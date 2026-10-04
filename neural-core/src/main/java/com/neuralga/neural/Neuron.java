@@ -18,7 +18,8 @@ public class Neuron {
     public Neuron(
             @JsonProperty("weights") double[] weights,
             @JsonProperty("bias") double bias,
-            @JsonProperty("activation") String activationName
+            @JsonProperty("activation") String activationName,
+            @JsonProperty("inputSize") int inputSize
     ) {
         this.weights = weights != null ? weights.clone() : new double[0];
         this.bias = bias;
@@ -26,6 +27,11 @@ public class Neuron {
         this.random = new Random();
         this.output = 0.0;
         this.delta = 0.0;
+        // If weights array is empty but inputSize is provided, initialize
+        if (this.weights.length == 0 && inputSize > 0) {
+            this.weights = new double[inputSize];
+            initializeWeights();
+        }
     }
 
     public Neuron(int inputSize, ActivationFunction activation, long seed) {
@@ -80,6 +86,11 @@ public class Neuron {
     public double getBias() { return bias; }
     public ActivationFunction getActivation() { return activation; }
     public int getInputSize() { return weights.length; }
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public void setInputSize(int inputSize) {
+        // Only used for deserialization
+    }
 
     public void setWeights(double[] weights) {
         this.weights = weights != null ? weights.clone() : new double[0];

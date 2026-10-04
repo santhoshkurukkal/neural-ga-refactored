@@ -142,8 +142,8 @@ public class CascadeGATrainer {
         };
 
         // Run GA
-        gaConfig.setChromosomeLength(chromosomeLength);
         GeneticAlgorithm ga = new GeneticAlgorithm(gaConfig, fitnessFunction);
+        ga.setChromosomeLength(chromosomeLength);
         Chromosome bestChromosome = ga.run();
 
         if (bestChromosome == null) {

@@ -36,6 +36,8 @@ class PopulationTest {
         pop.get(0).setFitness(0.1);
         pop.get(1).setFitness(0.9);
         pop.get(2).setFitness(0.5);
+        pop.get(3).setFitness(0.3);
+        pop.get(4).setFitness(0.7);
 
         assertThat(pop.getBest().getFitness()).isEqualTo(0.9);
         assertThat(pop.getWorst().getFitness()).isEqualTo(0.1);

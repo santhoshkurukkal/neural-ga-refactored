@@ -43,6 +43,15 @@ public class GAConfig {
     @JsonProperty("termination")
     private TerminationConfig termination = new TerminationConfig();
 
+    @JsonProperty("selection_strategy")
+    private String selectionStrategy = "TOURNAMENT";
+
+    @JsonProperty("random_seed")
+    private long randomSeed = 42;
+
+    @JsonProperty("parallel_ga_fitness")
+    private boolean parallelGAFitness = true;
+
     public GAConfig() {}
 
     public int getPopulationSize() { return populationSize; }
@@ -71,6 +80,15 @@ public class GAConfig {
 
     public String getFitnessMetric() { return fitnessMetric; }
     public void setFitnessMetric(String fitnessMetric) { this.fitnessMetric = fitnessMetric; }
+
+    public String getSelectionStrategy() { return selectionStrategy; }
+    public void setSelectionStrategy(String selectionStrategy) { this.selectionStrategy = selectionStrategy; }
+
+    public long getRandomSeed() { return randomSeed; }
+    public void setRandomSeed(long randomSeed) { this.randomSeed = randomSeed; }
+
+    public boolean isParallelGAFitness() { return parallelGAFitness; }
+    public void setParallelGAFitness(boolean parallelGAFitness) { this.parallelGAFitness = parallelGAFitness; }
 
     public double getSbxDistributionIndex() { return sbxDistributionIndex; }
     public void setSbxDistributionIndex(double sbxDistributionIndex) { this.sbxDistributionIndex = sbxDistributionIndex; }

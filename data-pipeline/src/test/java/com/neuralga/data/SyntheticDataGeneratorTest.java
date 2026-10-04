@@ -1,9 +1,11 @@
 package com.neuralga.data;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -168,7 +170,7 @@ class SyntheticDataGeneratorTest {
     }
 
     @Test
-    void shouldSaveToCsv(@io.TempDir Path tempDir) throws Exception {
+    void shouldSaveToCsv(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("synthetic.csv");
         SyntheticDataGenerator gen = SyntheticDataGenerator.builder()
                 .type(SyntheticDataGenerator.DataType.SINE)
