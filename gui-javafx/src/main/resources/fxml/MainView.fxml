@@ -49,8 +49,8 @@
         </TabPane>
     </center>
     <bottom>
-        <StatusBar fx:id="statusBar">
+        <HBox fx:id="statusBar" styleClass="status-bar">
             <Label fx:id="statusLabel" text="Ready"/>
-        </StatusBar>
+        </HBox>
     </bottom>
 </BorderPane>

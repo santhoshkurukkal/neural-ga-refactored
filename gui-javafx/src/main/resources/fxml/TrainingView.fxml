@@ -24,30 +24,30 @@
         <Label text="Or Generate Synthetic:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <ComboBox fx:id="syntheticTypeCombo" prefWidth="200"/>
-            <Spinner fx:id="dataLengthSpinner" initialValue="1000" min="100" max="10000" step="100"/>
-            <Spinner fx:id="noiseSpinner" initialValue="0.05" min="0" max="1" step="0.01"/>
+            <TextField fx:id="dataLengthField" text="1000" prefWidth="100"/>
+            <TextField fx:id="noiseField" text="0.05" prefWidth="80"/>
             <Button text="Generate" onAction="#handleGenerateData"/>
         </HBox>
 
         <Separator GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
 
         <Label text="Input Window:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <Spinner fx:id="inputWindowSpinner" initialValue="5" min="1" max="50" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <TextField fx:id="inputWindowField" text="5" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
         <Label text="Prediction Horizon:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <Spinner fx:id="horizonSpinner" initialValue="1" min="1" max="10" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <TextField fx:id="horizonField" text="1" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
         <Label text="Max Hidden Layers:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <Spinner fx:id="maxHiddenSpinner" initialValue="10" min="1" max="50" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <TextField fx:id="maxHiddenField" text="10" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
         <Label text="Neurons per Hidden Layer:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-        <Spinner fx:id="neuronsPerHiddenSpinner" initialValue="5" min="1" max="100" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        <TextField fx:id="neuronsPerHiddenField" text="5" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
         <Label text="Activation:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
         <ComboBox fx:id="activationCombo" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
 
         <Label text="Epochs:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-        <Spinner fx:id="epochsSpinner" initialValue="100" min="1" max="10000" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+        <TextField fx:id="epochsField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
 
         <Label text="Learning Rate:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
         <TextField fx:id="learningRateField" text="0.01" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
@@ -56,10 +56,10 @@
         <ComboBox fx:id="optimizerCombo" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
 
         <Label text="GA Population:" GridPane.columnIndex="0" GridPane.rowIndex="11"/>
-        <Spinner fx:id="gaPopSpinner" initialValue="50" min="10" max="500" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+        <TextField fx:id="gaPopField" text="50" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
 
         <Label text="GA Generations:" GridPane.columnIndex="0" GridPane.rowIndex="12"/>
-        <Spinner fx:id="gaGenSpinner" initialValue="100" min="10" max="1000" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+        <TextField fx:id="gaGenField" text="100" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
     </GridPane>
 
     <Separator/>

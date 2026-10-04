@@ -19,18 +19,18 @@ public class TrainingController {
 
     @FXML private TextField dataFileField;
     @FXML private ComboBox<SyntheticDataGenerator.DataType> syntheticTypeCombo;
-    @FXML private Spinner<Integer> dataLengthSpinner;
-    @FXML private Spinner<Double> noiseSpinner;
-    @FXML private Spinner<Integer> inputWindowSpinner;
-    @FXML private Spinner<Integer> horizonSpinner;
-    @FXML private Spinner<Integer> maxHiddenSpinner;
-    @FXML private Spinner<Integer> neuronsPerHiddenSpinner;
+    @FXML private TextField dataLengthField;
+    @FXML private TextField noiseField;
+    @FXML private TextField inputWindowField;
+    @FXML private TextField horizonField;
+    @FXML private TextField maxHiddenField;
+    @FXML private TextField neuronsPerHiddenField;
     @FXML private ComboBox<ActivationFunction> activationCombo;
-    @FXML private Spinner<Integer> epochsSpinner;
+    @FXML private TextField epochsField;
     @FXML private TextField learningRateField;
     @FXML private ComboBox<String> optimizerCombo;
-    @FXML private Spinner<Integer> gaPopSpinner;
-    @FXML private Spinner<Integer> gaGenSpinner;
+    @FXML private TextField gaPopField;
+    @FXML private TextField gaGenField;
     @FXML private Button trainButton;
     @FXML private Button stopButton;
     @FXML private ProgressBar progressBar;
@@ -54,27 +54,6 @@ public class TrainingController {
         // Initialize optimizer combo
         optimizerCombo.getItems().addAll("SGD", "ADAM", "RMSPROP");
         optimizerCombo.setValue("ADAM");
-
-        // Setup spinners
-        setupSpinner(dataLengthSpinner, 100, 10000, 1000, 100);
-        setupSpinner(noiseSpinner, 0.0, 1.0, 0.05, 0.01);
-        setupSpinner(inputWindowSpinner, 1, 50, 5, 1);
-        setupSpinner(horizonSpinner, 1, 10, 1, 1);
-        setupSpinner(maxHiddenSpinner, 1, 50, 10, 1);
-        setupSpinner(neuronsPerHiddenSpinner, 1, 100, 5, 1);
-        setupSpinner(epochsSpinner, 1, 10000, 100, 10);
-        setupSpinner(gaPopSpinner, 10, 500, 50, 10);
-        setupSpinner(gaGenSpinner, 10, 1000, 100, 10);
-    }
-
-    private void setupSpinner(Spinner<Integer> spinner, int min, int max, int initial, int step) {
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, initial, step));
-        spinner.setEditable(true);
-    }
-
-    private void setupSpinner(Spinner<Double> spinner, double min, double max, double initial, double step) {
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, initial, step));
-        spinner.setEditable(true);
     }
 
     @FXML
@@ -97,8 +76,8 @@ public class TrainingController {
     @FXML
     private void handleGenerateData() {
         SyntheticDataGenerator.DataType type = syntheticTypeCombo.getValue();
-        int length = dataLengthSpinner.getValue();
-        double noise = noiseSpinner.getValue();
+        int length = parseInt(dataLengthField.getText(), 1000);
+        double noise = parseDouble(noiseField.getText(), 0.05);
 
         SyntheticDataGenerator gen = SyntheticDataGenerator.builder()
                 .type(type)
@@ -135,21 +114,22 @@ public class TrainingController {
 
         // Build configs from UI
         TrainingConfig trainingConfig = new TrainingConfig();
-        trainingConfig.setInputWindow(inputWindowSpinner.getValue());
-        trainingConfig.setPredictionHorizon(horizonSpinner.getValue());
-        trainingConfig.setMaxHiddenLayers(maxHiddenSpinner.getValue());
-        trainingConfig.setNeuronsPerHiddenLayer(neuronsPerHiddenSpinner.getValue());
+        trainingConfig.setInputWindow(parseInt(inputWindowField.getText(), 5));
+        trainingConfig.setPredictionHorizon(parseInt(horizonField.getText(), 1));
+        trainingConfig.setMaxHiddenLayers(parseInt(maxHiddenField.getText(), 10));
+        trainingConfig.setNeuronsPerHiddenLayer(parseInt(neuronsPerHiddenField.getText(), 5));
         trainingConfig.setActivation(activationCombo.getValue().name());
-        trainingConfig.setEpochs(epochsSpinner.getValue());
-        trainingConfig.setLearningRate(Double.parseDouble(learningRateField.getText()));
+        trainingConfig.setEpochs(parseInt(epochsField.getText(), 100));
+        trainingConfig.setLearningRate(parseDouble(learningRateField.getText(), 0.01));
         trainingConfig.setOptimizer(optimizerCombo.getValue());
 
         CascadeConfig cascadeConfig = new CascadeConfig();
-        cascadeConfig.setMaxCascadeIterations(maxHiddenSpinner.getValue());
+        cascadeConfig.setMaxCascadeIterations(parseInt(maxHiddenField.getText(), 10));
 
         GAConfig gaConfig = new GAConfig();
-        gaConfig.setPopulationSize(gaPopSpinner.getValue());
-        gaConfig.setGenerations(gaGenSpinner.getValue());
+        gaConfig.setPopulationSize(parseInt(gaPopField.getText(), 50));
+        gaConfig.setGenerations(parseInt(gaGenField.getText(), 100));
+        gaConfig.getTermination().setMaxGenerations(parseInt(gaGenField.getText(), 100));
 
         AppConfig appConfig = new AppConfig();
 
@@ -159,7 +139,7 @@ public class TrainingController {
             pipeline.loadData(selectedDataFile.getAbsolutePath());
         } else {
             log("No data file selected, using synthetic data");
-            pipeline.generateData(syntheticTypeCombo.getValue(), dataLengthSpinner.getValue(), noiseSpinner.getValue());
+            pipeline.generateData(syntheticTypeCombo.getValue(), parseInt(dataLengthField.getText(), 1000), parseDouble(noiseField.getText(), 0.05));
         }
 
         trainingTask = new Task<>() {
@@ -239,5 +219,21 @@ public class TrainingController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private int parseInt(String text, int defaultValue) {
+        try {
+            return Integer.parseInt(text.trim());
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    private double parseDouble(String text, double defaultValue) {
+        try {
+            return Double.parseDouble(text.trim());
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 }

@@ -41,7 +41,7 @@
         <TextField fx:id="interactiveInputField" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="e.g., 0.1, 0.2, 0.3, 0.4, 0.5"/>
 
         <Label text="Prediction Steps:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Spinner fx:id="predictStepsSpinner" initialValue="1" min="1" max="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="predictStepsField" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
 
     <Button fx:id="predictInteractiveButton" text="Predict" onAction="#handleInteractivePredict" styleClass="primary-button"/>

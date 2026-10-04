@@ -20,8 +20,8 @@ public class TrainCommand implements Callable<Integer> {
     @Option(names = {"-c", "--config"}, description = "Path to config YAML")
     String configPath = "config/training.yaml";
 
-    @Option(names = {"-o", "--output"}, description = "Output model file")
-    String outputFile = "models/best-model.json";
+    @Option(names = {"-o", "--output"}, description = "Output model file (saved to models directory)")
+    String outputFile = "best-model.json";
 
     @Option(names = {"--generate"}, description = "Generate synthetic data instead of loading")
     boolean generate = false;

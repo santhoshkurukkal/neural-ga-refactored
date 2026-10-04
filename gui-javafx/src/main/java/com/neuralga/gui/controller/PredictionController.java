@@ -3,6 +3,8 @@ package com.neuralga.gui.controller;
 import com.neuralga.config.AppConfig;
 import com.neuralga.data.CsvTimeseriesReader;
 import com.neuralga.data.SlidingWindowDataset;
+import com.neuralga.neural.CascadeCorrelationNetwork;
+import com.neuralga.neural.Network;
 import com.neuralga.service.ModelLoader;
 import com.neuralga.service.PredictionService;
 import javafx.application.Platform;
@@ -23,7 +25,7 @@ public class PredictionController {
     @FXML private TextField predictDataFileField;
     @FXML private TextField predictOutputField;
     @FXML private TextField interactiveInputField;
-    @FXML private Spinner<Integer> predictStepsSpinner;
+    @FXML private TextField predictStepsField;
     @FXML private Button predictBatchButton;
     @FXML private Button predictInteractiveButton;
     @FXML private TextArea resultArea;
@@ -35,7 +37,7 @@ public class PredictionController {
 
     @FXML
     public void initialize() {
-        predictStepsSpinner.setValueFactory(new javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
+        // predictStepsField is a TextField, no initialization needed
     }
 
     @FXML
@@ -53,7 +55,7 @@ public class PredictionController {
                 appendResult("Model loaded: " + file.getName());
                 appendResult("Input window: " + loadedModel.getInputWindow());
                 appendResult("Prediction horizon: " + loadedModel.getPredictionHorizon());
-                appendResult("Hidden layers: " + loadedModel.getNetwork().getHiddenLayerCount());
+                appendResult("Hidden layers: " + getHiddenLayerCount(loadedModel.getNetwork()));
             } catch (Exception e) {
                 appendResult("Error loading model: " + e.getMessage());
                 showError("Load Failed", e.getMessage());
@@ -180,7 +182,7 @@ public class PredictionController {
                 return;
             }
 
-            int steps = predictStepsSpinner.getValue();
+            int steps = parseInt(predictStepsField.getText(), 1);
             List<Double> predictions = predictionService.predictSequence(input, steps);
 
             appendResult("Input: " + java.util.Arrays.toString(input));
@@ -203,5 +205,20 @@ public class PredictionController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private int getHiddenLayerCount(Network network) {
+        if (network instanceof CascadeCorrelationNetwork) {
+            return ((CascadeCorrelationNetwork) network).getHiddenLayerCount();
+        }
+        return 0;
+    }
+
+    private int parseInt(String text, int defaultValue) {
+        try {
+            return Integer.parseInt(text.trim());
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 }

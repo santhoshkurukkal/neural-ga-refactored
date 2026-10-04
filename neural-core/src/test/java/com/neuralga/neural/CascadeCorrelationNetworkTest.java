@@ -11,7 +11,7 @@ class CascadeCorrelationNetworkTest {
     private TrainingConfig createConfig() {
         TrainingConfig config = new TrainingConfig();
         config.setInputWindow(5);
-        config.setInitialOutputNeurons(3);
+        config.setPredictionHorizon(3);
         config.setNeuronsPerHiddenLayer(4);
         config.setMaxHiddenLayers(3);
         config.setActivation("TANH");

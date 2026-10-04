@@ -1,5 +1,7 @@
 package com.neuralga.cli.command;
 
+import com.neuralga.config.AppConfig;
+import com.neuralga.config.ConfigLoader;
 import com.neuralga.data.CsvTimeseriesReader;
 import com.neuralga.data.SlidingWindowDataset;
 import com.neuralga.service.ModelLoader;
@@ -8,6 +10,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
@@ -15,8 +18,8 @@ import java.util.concurrent.Callable;
 @Command(name = "predict", description = "Make predictions using a trained model")
 public class PredictCommand implements Callable<Integer> {
 
-    @Option(names = {"-m", "--model"}, description = "Path to model file", required = true)
-    String modelFile;
+    @Option(names = {"-m", "--model"}, description = "Path to model file (relative to models directory or absolute path)", required = true)
+    String modelFile = "best-model.json";
 
     @Option(names = {"-d", "--data"}, description = "Path to input data file")
     String dataFile;
@@ -27,12 +30,21 @@ public class PredictCommand implements Callable<Integer> {
     @Option(names = {"--steps"}, description = "Number of steps to predict (if no data file)")
     int steps = 10;
 
-    @Override
-    public Integer call() {
-        try {
-            Path modelPath = Paths.get(modelFile);
-            ModelLoader.Model model = ModelLoader.load(modelPath);
-            PredictionService service = new PredictionService(model);
+@Override
+        public Integer call() {
+            try {
+                AppConfig appConfig = ConfigLoader.loadAppConfig(ConfigLoader.loadAppConfig("config/training.yaml").toString());
+                Path modelPath = Paths.get(modelFile);
+                // If path is not absolute, resolve against models directory
+                if (!modelPath.isAbsolute()) {
+                    String modelDirStr = appConfig.getModelsDir().toString().replace('\\', '/');
+                    String modelFileNormalized = modelFile.replace('\\', '/');
+                    if (!modelFileNormalized.startsWith(modelDirStr + "/")) {
+                        modelPath = appConfig.getModelsDir().resolve(modelFile);
+                    }
+                }
+                ModelLoader.Model model = ModelLoader.load(modelPath);
+                PredictionService service = new PredictionService(model);
 
             if (dataFile != null && !dataFile.isEmpty()) {
                 // Load data and predict on each window
