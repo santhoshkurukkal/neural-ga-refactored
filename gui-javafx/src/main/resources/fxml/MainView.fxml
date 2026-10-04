@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:id="mainPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.neuralga.gui.controller.MainController">
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem text="New Project" onAction="#handleNewProject"/>
+                        <MenuItem text="Open Model..." onAction="#handleOpenModel"/>
+                        <MenuItem text="Save Model..." onAction="#handleSaveModel"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Exit" onAction="#handleExit"/>
+                    </items>
+                </Menu>
+                <Menu text="View">
+                    <items>
+                        <MenuItem text="Training" onAction="#showTrainingView"/>
+                        <MenuItem text="Prediction" onAction="#showPredictionView"/>
+                        <MenuItem text="Model Info" onAction="#showModelInfo"/>
+                    </items>
+                </Menu>
+                <Menu text="Help">
+                    <items>
+                        <MenuItem text="About" onAction="#handleAbout"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Training" fx:id="trainingTab">
+                    <content>
+                        <fx:include fx:id="trainingView" source="TrainingView.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Prediction" fx:id="predictionTab">
+                    <content>
+                        <fx:include fx:id="predictionView" source="PredictionView.fxml"/>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+    <bottom>
+        <StatusBar fx:id="statusBar">
+            <Label fx:id="statusLabel" text="Ready"/>
+        </StatusBar>
+    </bottom>
+</BorderPane>

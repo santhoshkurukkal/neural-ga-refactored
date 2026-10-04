@@ -1,0 +1,47 @@
+# Build artifacts
+target/
+*.jar
+*.war
+*.ear
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Maven
+.mvn/timing.properties
+maven-wrapper.jar
+
+# Generated data
+data/sample/*.csv
+!data/sample/cpu.txt
+!data/sample/.gitkeep
+
+# Models
+models/
+!models/.gitkeep
+
+# Test reports
+**/target/surefire-reports/
+**/target/failsafe-reports/
+
+# Native images
+**/target/jlink/
+
+# Temporary
+tmp/
+temp/
+*.tmp

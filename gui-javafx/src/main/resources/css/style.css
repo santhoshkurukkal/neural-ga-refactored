@@ -1,0 +1,94 @@
+/* Neural-GA JavaFX Styles */
+
+.section-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 5 0 5 0;
+}
+
+.primary-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 4;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.primary-button:disabled {
+    -fx-background-color: #bdc3c7;
+    -fx-text-fill: #95a5a6;
+}
+
+.text-area {
+    -fx-font-family: "Consolas", "Monospace";
+    -fx-font-size: 12px;
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #ecf0f1;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #ecf0f1;
+    -fx-padding: 8 16 8 16;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: white;
+    -fx-border-color: #3498db;
+    -fx-border-width: 0 0 2 0;
+}
+
+.status-bar {
+    -fx-background-color: #ecf0f1;
+    -fx-padding: 5 10 5 10;
+}
+
+.grid-pane {
+    -fx-padding: 10;
+}
+
+.label {
+    -fx-text-fill: #2c3e50;
+}
+
+.text-field, .combo-box, .spinner {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 4;
+    -fx-padding: 5 10 5 10;
+}
+
+.text-field:focused, .combo-box:focused, .spinner:focused {
+    -fx-border-color: #3498db;
+}
+
+.button {
+    -fx-background-color: #ecf0f1;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #d5dbdb;
+}
+
+.separator {
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1 0 0 0;
+}
+
+.progress-bar {
+    -fx-accent: #3498db;
+    -fx-background-color: #ecf0f1;
+}

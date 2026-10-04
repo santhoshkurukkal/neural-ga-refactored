@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.neuralga.gui.controller.TrainingController">
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+    <Label text="Training Configuration" styleClass="section-title"/>
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="30"/>
+            <ColumnConstraints percentWidth="70"/>
+        </columnConstraints>
+
+        <Label text="Data File:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <TextField fx:id="dataFileField" HBox.hgrow="ALWAYS"/>
+            <Button text="Browse..." onAction="#handleBrowseDataFile"/>
+        </HBox>
+
+        <Label text="Or Generate Synthetic:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ComboBox fx:id="syntheticTypeCombo" prefWidth="200"/>
+            <Spinner fx:id="dataLengthSpinner" initialValue="1000" min="100" max="10000" step="100"/>
+            <Spinner fx:id="noiseSpinner" initialValue="0.05" min="0" max="1" step="0.01"/>
+            <Button text="Generate" onAction="#handleGenerateData"/>
+        </HBox>
+
+        <Separator GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
+
+        <Label text="Input Window:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Spinner fx:id="inputWindowSpinner" initialValue="5" min="1" max="50" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Prediction Horizon:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <Spinner fx:id="horizonSpinner" initialValue="1" min="1" max="10" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Max Hidden Layers:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <Spinner fx:id="maxHiddenSpinner" initialValue="10" min="1" max="50" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+        <Label text="Neurons per Hidden Layer:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <Spinner fx:id="neuronsPerHiddenSpinner" initialValue="5" min="1" max="100" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+        <Label text="Activation:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <ComboBox fx:id="activationCombo" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+        <Label text="Epochs:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <Spinner fx:id="epochsSpinner" initialValue="100" min="1" max="10000" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+        <Label text="Learning Rate:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <TextField fx:id="learningRateField" text="0.01" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+        <Label text="Optimizer:" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+        <ComboBox fx:id="optimizerCombo" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+
+        <Label text="GA Population:" GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+        <Spinner fx:id="gaPopSpinner" initialValue="50" min="10" max="500" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+
+        <Label text="GA Generations:" GridPane.columnIndex="0" GridPane.rowIndex="12"/>
+        <Spinner fx:id="gaGenSpinner" initialValue="100" min="10" max="1000" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+    </GridPane>
+
+    <Separator/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="trainButton" text="Start Training" onAction="#handleStartTraining" defaultButton="true" styleClass="primary-button"/>
+        <Button fx:id="stopButton" text="Stop" onAction="#handleStopTraining" disable="true"/>
+        <Button text="Save Config" onAction="#handleSaveConfig"/>
+    </HBox>
+
+    <Separator/>
+
+    <Label text="Training Progress" styleClass="section-title"/>
+    <ProgressBar fx:id="progressBar" progress="0" prefWidth="Infinity"/>
+    <Label fx:id="progressLabel" text="Not started"/>
+
+    <Label text="Logs" styleClass="section-title"/>
+    <TextArea fx:id="logArea" editable="false" wrapText="true" prefHeight="200" VBox.vgrow="ALWAYS"/>
+</VBox>

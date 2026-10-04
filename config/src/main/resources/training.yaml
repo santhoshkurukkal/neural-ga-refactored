@@ -1,0 +1,63 @@
+# Neural Network Training Configuration
+# All parameters for the cascade correlation neural network training
+
+neural:
+  input_window: 5                    # Number of past time steps as input
+  prediction_horizon: 1              # Number of future steps to predict
+  initial_output_neurons: 5          # Starting output neurons (cascade starts here)
+  max_hidden_layers: 10              # Maximum hidden layers to add via cascade
+  neurons_per_hidden_layer: 5        # Neurons in each added hidden layer
+  activation: "TANH"                 # Hidden layer activation: TANH, RELU, SIGMOID, LINEAR
+  output_activation: "LINEAR"        # Output layer activation
+
+training:
+  epochs: 100                        # Max epochs per training phase
+  batch_size: 32                     # Mini-batch size
+  learning_rate: 0.01                # Initial learning rate
+  optimizer: "ADAM"                  # Optimizer: SGD, ADAM
+  loss: "MSE"                        # Loss function: MSE, MAE
+
+  early_stopping:
+    patience: 10                     # Epochs to wait for improvement
+    min_delta: 1.0e-4               # Minimum improvement to reset patience
+
+  validation_split: 0.2              # Fraction for validation (chronological)
+  test_split: 0.1                    # Fraction for final test (chronological)
+
+cascade:
+  error_threshold: 0.5               # Validation MSE threshold to trigger cascade growth
+  max_cascade_iterations: 10         # Max times to add hidden layer
+  retrain_epochs_after_growth: 50    # Epochs to fine-tune after adding layer
+  fine_tune_learning_rate_factor: 0.1 # Multiply LR by this for fine-tuning
+  min_improvement_for_growth: 0.01   # Min relative improvement to accept new layer
+
+ga:
+  population_size: 50                # GA population size
+  generations: 100                   # Max GA generations
+  elitism_count: 2                   # Top individuals to preserve
+  tournament_size: 3                 # Tournament selection size
+  crossover_rate: 0.8                # Probability of crossover
+  mutation_rate: 0.1                 # Probability of mutation per gene
+  crossover_operator: "SBX"          # Crossover: SBX, UNIFORM, SINGLE_POINT
+  mutation_operator: "GAUSSIAN"      # Mutation: GAUSSIAN, POLYNOMIAL
+  fitness_metric: "VAL_MSE"          # Fitness: VAL_MSE, VAL_MAE, VAL_R2
+  sbx_distribution_index: 15.0       # SBX distribution index (eta)
+  polynomial_mutation_distribution_index: 20.0 # Polynomial mutation index
+  gaussian_mutation_std_dev: 0.1     # Gaussian mutation std dev
+
+  termination:
+    max_generations: 100
+    max_time_seconds: 300
+    convergence_threshold: 1.0e-6
+    stagnation_generations: 20
+
+app:
+  data_dir: "data/sample"
+  models_dir: "models"
+  logs_dir: "logs"
+  default_data_file: "cpu.txt"
+  synthetic_data_file: "synthetic.csv"
+  default_model_file: "best-model.json"
+  random_seed: 42
+  parallel_ga_fitness: true
+  log_level: "INFO"

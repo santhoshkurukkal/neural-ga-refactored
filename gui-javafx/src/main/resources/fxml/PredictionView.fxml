@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.neuralga.gui.controller.PredictionController">
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+    <Label text="Model" styleClass="section-title"/>
+    <HBox spacing="10">
+        <Label text="Model File:"/>
+        <TextField fx:id="modelFileField" HBox.hgrow="ALWAYS"/>
+        <Button text="Load Model" onAction="#handleLoadModel"/>
+    </HBox>
+
+    <Separator/>
+
+    <Label text="Batch Prediction" styleClass="section-title"/>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Input Data File:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <TextField fx:id="predictDataFileField" HBox.hgrow="ALWAYS"/>
+            <Button text="Browse..." onAction="#handleBrowsePredictData"/>
+        </HBox>
+
+        <Label text="Output File:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="predictOutputField" text="predictions.csv" HBox.hgrow="ALWAYS"/>
+            <Button text="Browse..." onAction="#handleBrowsePredictOutput"/>
+        </HBox>
+    </GridPane>
+
+    <Button fx:id="predictBatchButton" text="Run Batch Prediction" onAction="#handleBatchPredict" defaultButton="true" styleClass="primary-button"/>
+
+    <Separator/>
+
+    <Label text="Interactive Prediction" styleClass="section-title"/>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Input Values (comma-separated):" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="interactiveInputField" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="e.g., 0.1, 0.2, 0.3, 0.4, 0.5"/>
+
+        <Label text="Prediction Steps:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Spinner fx:id="predictStepsSpinner" initialValue="1" min="1" max="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </GridPane>
+
+    <Button fx:id="predictInteractiveButton" text="Predict" onAction="#handleInteractivePredict" styleClass="primary-button"/>
+
+    <Separator/>
+
+    <Label text="Results" styleClass="section-title"/>
+    <TextArea fx:id="resultArea" editable="false" wrapText="true" prefHeight="300" VBox.vgrow="ALWAYS"/>
+</VBox>
