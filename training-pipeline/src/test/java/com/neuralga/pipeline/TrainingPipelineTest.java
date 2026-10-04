@@ -14,7 +14,7 @@ class TrainingPipelineTest {
         TrainingConfig c = new TrainingConfig();
         c.setInputWindow(3);
         c.setPredictionHorizon(1);
-        c.setInitialOutputNeurons(2);
+        c.setInitialOutputNeurons(1);
         c.setNeuronsPerHiddenLayer(3);
         c.setMaxHiddenLayers(2);
         c.setEpochs(10);

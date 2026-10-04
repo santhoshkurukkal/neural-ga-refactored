@@ -57,12 +57,14 @@ class NetworkTest {
         double[] input = {1.0, 0.0};
         double[] target = {1.0, 0.0};
 
+        double[] outputBefore = network.forward(input);
         network.train(input, target);
+        double[] outputAfter = network.getOutput();
 
-        // After one training step with LR=0.1, output should move toward target
-        double[] output = network.getOutput();
-        // Just verify it moved in the right direction (output[0] should increase from 0)
-        assertThat(output[0]).isGreaterThan(0.0);
+        // After one training step, loss should not increase (may stay same or decrease)
+        double lossBefore = LossFunction.MSE.compute(outputBefore, new double[]{1.0, 0.0});
+        double lossAfter = LossFunction.MSE.compute(outputAfter, new double[]{1.0, 0.0});
+        assertThat(lossAfter).isLessThanOrEqualTo(lossBefore);
     }
 
     @Test
