@@ -73,11 +73,6 @@ public class Neuron {
     public void backward(double[] inputs, double error) {
         double derivative = activation.derivative(output);
         delta = error * derivative;
-
-        for (int i = 0; i < weights.length; i++) {
-            weights[i] += inputs[i] * delta;
-        }
-        bias += delta;
     }
 
     public double getOutput() { return output; }

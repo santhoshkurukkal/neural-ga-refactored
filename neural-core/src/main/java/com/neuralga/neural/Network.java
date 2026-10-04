@@ -133,7 +133,12 @@ public class Network {
         public final List<double[]> biases;
         public final double learningRate;
 
-        public NetworkParams(List<double[][]> weights, List<double[]> biases, double learningRate) {
+        @JsonCreator
+        public NetworkParams(
+                @JsonProperty("weights") List<double[][]> weights,
+                @JsonProperty("biases") List<double[]> biases,
+                @JsonProperty("learningRate") double learningRate
+        ) {
             this.weights = weights;
             this.biases = biases;
             this.learningRate = learningRate;

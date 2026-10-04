@@ -35,6 +35,7 @@
         <spotbugs.version>4.8.6</spotbugs.version>
         <checkstyle.version>3.3.1</checkstyle.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <exec.maven.plugin.version>3.6.4</exec.maven.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -203,6 +204,14 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>${checkstyle.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${exec.maven.plugin.version}</version>
+                    <configuration>
+                        <mainClass>com.neuralga.cli.NeuralGAMain</mainClass>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

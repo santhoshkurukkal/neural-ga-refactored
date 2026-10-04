@@ -98,47 +98,56 @@ public class CascadeGATrainer {
         return true;
     }
 
-    private double addHiddenLayerWithGA(CascadeCorrelationNetwork network,
-                                         SlidingWindowDataset trainData,
-                                         SlidingWindowDataset valData) {
+private double addHiddenLayerWithGA(CascadeCorrelationNetwork network,
+                                          SlidingWindowDataset trainData,
+                                          SlidingWindowDataset valData) {
         int hiddenSize = trainingConfig.getNeuronsPerHiddenLayer();
         int inputSize = network.getInputSize();
         int chromosomeLength = hiddenSize * inputSize + hiddenSize;
 
         // Create fitness function for GA
         FitnessFunction fitnessFunction = chromosome -> {
-            // Decode chromosome
-            double[][] weights = new double[hiddenSize][inputSize];
-            double[] biases = new double[hiddenSize];
-            int weightCount = hiddenSize * inputSize;
+            try {
+                // Decode chromosome
+                double[][] weights = new double[hiddenSize][inputSize];
+                double[] biases = new double[hiddenSize];
+                int weightCount = hiddenSize * inputSize;
 
-            for (int i = 0; i < hiddenSize; i++) {
-                for (int j = 0; j < inputSize; j++) {
-                    weights[i][j] = chromosome.getGene(i * inputSize + j);
+                for (int i = 0; i < hiddenSize; i++) {
+                    for (int j = 0; j < inputSize; j++) {
+                        weights[i][j] = chromosome.getGene(i * inputSize + j);
+                    }
+                    biases[i] = chromosome.getGene(weightCount + i);
                 }
-                biases[i] = chromosome.getGene(weightCount + i);
+
+                // Create test network with this hidden layer
+                CascadeCorrelationNetwork testNet = cloneNetwork(network);
+                testNet.addHiddenLayer(weights, biases);
+
+                // Fine-tune with reduced learning rate
+                double originalLR = backpropTrainer.getOptimizer().getLearningRate();
+                backpropTrainer.getOptimizer().setLearningRate(
+                        originalLR * cascadeConfig.getFineTuneLearningRateFactor());
+
+                // Train for retrainEpochsAfterGrowth
+                BackpropTrainer fineTuner = new BackpropTrainer(trainingConfig);
+                fineTuner.getOptimizer().setLearningRate(
+                        originalLR * cascadeConfig.getFineTuneLearningRateFactor());
+
+                BackpropTrainer.TrainingResult result = fineTuner.train(testNet, trainData, valData);
+
+                // Restore learning rate
+                backpropTrainer.getOptimizer().setLearningRate(originalLR);
+
+                if (Double.isNaN(result.bestValLoss) || Double.isInfinite(result.bestValLoss)) {
+                    return Double.NEGATIVE_INFINITY;
+                }
+
+                return -result.bestValLoss; // Negative because GA maximizes
+            } catch (Exception e) {
+                log.warn("Fitness evaluation failed: {}", e.getMessage());
+                return Double.NEGATIVE_INFINITY;
             }
-
-            // Create test network with this hidden layer
-            CascadeCorrelationNetwork testNet = cloneNetwork(network);
-            testNet.addHiddenLayer(weights, biases);
-
-            // Fine-tune with reduced learning rate
-            double originalLR = backpropTrainer.getOptimizer().getLearningRate();
-            backpropTrainer.getOptimizer().setLearningRate(
-                    originalLR * cascadeConfig.getFineTuneLearningRateFactor());
-
-            // Train for retrainEpochsAfterGrowth
-            BackpropTrainer fineTuner = new BackpropTrainer(trainingConfig);
-            fineTuner.getOptimizer().setLearningRate(
-                    originalLR * cascadeConfig.getFineTuneLearningRateFactor());
-
-            BackpropTrainer.TrainingResult result = fineTuner.train(testNet, trainData, valData);
-
-            // Restore learning rate
-            backpropTrainer.getOptimizer().setLearningRate(originalLR);
-
-            return -result.bestValLoss; // Negative because GA maximizes
         };
 
         // Run GA

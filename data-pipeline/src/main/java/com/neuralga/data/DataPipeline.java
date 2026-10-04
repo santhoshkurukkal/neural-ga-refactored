@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class DataPipeline {
@@ -44,7 +45,19 @@ public class DataPipeline {
     }
 
     public DataPipeline loadData(String filename) {
-        Path dataPath = appConfig.getDataDir().resolve(filename);
+        Path dataPath = Paths.get(filename);
+        // If the path is not absolute, resolve against dataDir unless it's already under dataDir
+        if (!dataPath.isAbsolute()) {
+            String dataDirStr = appConfig.getDataDir().toString().replace('\\', '/');
+            String filenameNormalized = filename.replace('\\', '/');
+            boolean startsWith = filenameNormalized.startsWith(dataDirStr + "/");
+            System.out.println("DEBUG: dataDirStr=[" + dataDirStr + "], filenameNormalized=[" + filenameNormalized + "], startsWith=" + startsWith);
+            if (!startsWith && !filenameNormalized.equals(dataDirStr)) {
+                System.out.println("DEBUG: Prepending dataDir to filename");
+                dataPath = appConfig.getDataDir().resolve(filename);
+            }
+        }
+        System.out.println("DEBUG: Final dataPath = " + dataPath);
         rawData = reader.loadFromPath(dataPath);
         log.info("Loaded raw data: {} samples from {}", rawData.size(), dataPath);
         return this;

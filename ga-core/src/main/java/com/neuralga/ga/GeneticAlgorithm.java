@@ -72,6 +72,10 @@ public class GeneticAlgorithm {
             notifyGenerationEnd();
         }
 
+        if (bestEver == null) {
+            log.warn("GA finished but no valid solution found (bestEver is null)");
+            return population.getBest();
+        }
         log.info("GA finished after {} generations. Best fitness: {:.6f}", generation, bestEver.getFitness());
         return bestEver;
     }

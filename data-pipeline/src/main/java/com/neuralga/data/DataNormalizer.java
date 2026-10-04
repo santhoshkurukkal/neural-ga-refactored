@@ -1,5 +1,7 @@
 package com.neuralga.data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +29,34 @@ public class DataNormalizer {
     private double q3;
     private boolean fitted = false;
 
-    public DataNormalizer(Method method) {
-        this.method = method;
+    @JsonCreator
+    public DataNormalizer(@JsonProperty("method") Method method) {
+        this.method = method != null ? method : Method.Z_SCORE;
     }
+
+    @JsonProperty("min")
+    public void setMin(double min) { this.min = min; }
+
+    @JsonProperty("max")
+    public void setMax(double max) { this.max = max; }
+
+    @JsonProperty("mean")
+    public void setMean(double mean) { this.mean = mean; }
+
+    @JsonProperty("std")
+    public void setStd(double std) { this.std = std; }
+
+    @JsonProperty("median")
+    public void setMedian(double median) { this.median = median; }
+
+    @JsonProperty("q1")
+    public void setQ1(double q1) { this.q1 = q1; }
+
+    @JsonProperty("q3")
+    public void setQ3(double q3) { this.q3 = q3; }
+
+    @JsonProperty("fitted")
+    public void setFitted(boolean fitted) { this.fitted = fitted; }
 
     public void fit(List<Double> data) {
         if (data == null || data.isEmpty()) {

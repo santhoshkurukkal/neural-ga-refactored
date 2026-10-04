@@ -1,0 +1,58 @@
+# Neural Network Training Configuration - No Cascade
+neural:
+  input_window: 5
+  prediction_horizon: 1
+  initial_output_neurons: 5
+  max_hidden_layers: 10
+  neurons_per_hidden_layer: 5
+  activation: "TANH"
+  output_activation: "LINEAR"
+
+training:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.01
+  optimizer: "ADAM"
+  loss: "MSE"
+  early_stopping:
+    patience: 10
+    min_delta: 1.0e-4
+  validation_split: 0.2
+  test_split: 0.1
+
+cascade:
+  error_threshold: 0.0
+  max_cascade_iterations: 0
+  retrain_epochs_after_growth: 50
+  fine_tune_learning_rate_factor: 0.1
+  min_improvement_for_growth: 0.01
+
+ga:
+  population_size: 50
+  generations: 100
+  elitism_count: 2
+  tournament_size: 3
+  crossover_rate: 0.8
+  mutation_rate: 0.1
+  crossover_operator: "SBX"
+  mutation_operator: "GAUSSIAN"
+  fitness_metric: "VAL_MSE"
+  sbx_distribution_index: 15.0
+  polynomial_mutation_distribution_index: 20.0
+  gaussian_mutation_std_dev: 0.1
+  termination:
+    max_generations: 100
+    max_time_seconds: 300
+    convergence_threshold: 1.0e-6
+    stagnation_generations: 20
+
+app:
+  data_dir: "data/sample"
+  models_dir: "models"
+  logs_dir: "logs"
+  default_data_file: "cpu.txt"
+  synthetic_data_file: "synthetic.csv"
+  default_model_file: "best-model.json"
+  random_seed: 42
+  parallel_ga_fitness: true
+  log_level: "INFO"

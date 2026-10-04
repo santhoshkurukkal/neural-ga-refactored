@@ -25,7 +25,7 @@ public class CascadeCorrelationNetwork extends Network {
 
         // Create initial output layer (no hidden layers yet)
         int inputSize = trainingConfig.getInputWindow();
-        int outputSize = trainingConfig.getInitialOutputNeurons();
+        int outputSize = trainingConfig.getPredictionHorizon();
         outputLayer = new Layer(outputSize, inputSize, ActivationFunction.fromString(trainingConfig.getOutputActivation()));
         layers.add(outputLayer);
         setLearningRate(trainingConfig.getLearningRate());
@@ -60,7 +60,7 @@ public class CascadeCorrelationNetwork extends Network {
         double[] oldBiases = outputLayer.getBiases();
 
         ActivationFunction outActivation = ActivationFunction.fromString(trainingConfig.getOutputActivation());
-        int outputSize = trainingConfig.getInitialOutputNeurons();
+        int outputSize = trainingConfig.getPredictionHorizon();
 
         outputLayer = new Layer(outputSize, newInputSize, outActivation);
 

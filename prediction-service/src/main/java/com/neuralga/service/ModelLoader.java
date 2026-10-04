@@ -24,28 +24,24 @@ public class ModelLoader {
 
         NetworkSerializer.ModelData modelData = NetworkSerializer.load(modelPath);
 
-        if (!(modelData.network instanceof CascadeCorrelationNetwork)) {
-            log.warn("Loaded network is not a CascadeCorrelationNetwork, wrapping");
-        }
-
-        CascadeCorrelationNetwork network = (CascadeCorrelationNetwork) modelData.network;
+        Network network = modelData.network;
         DataNormalizer normalizer = modelData.normalizer;
         TrainingConfig config = modelData.config;
 
         log.info("Loaded model from: {}", modelPath);
-        log.info("Network: {} hidden layers, input={}, output={}",
-                network.getHiddenLayerCount(), network.getInputSize(), network.getOutputSize());
+        log.info("Network: input={}, output={}, layers={}",
+                network.getInputSize(), network.getOutputSize(), network.getNumLayers());
 
         return new Model(network, normalizer, config, modelData.metrics);
     }
 
     public static class Model {
-        private final CascadeCorrelationNetwork network;
+        private final Network network;
         private final DataNormalizer normalizer;
         private final TrainingConfig config;
         private final java.util.Map<String, Object> metrics;
 
-        public Model(CascadeCorrelationNetwork network, DataNormalizer normalizer,
+        public Model(Network network, DataNormalizer normalizer,
                      TrainingConfig config, java.util.Map<String, Object> metrics) {
             this.network = Objects.requireNonNull(network);
             this.normalizer = normalizer;
@@ -53,7 +49,7 @@ public class ModelLoader {
             this.metrics = metrics;
         }
 
-        public CascadeCorrelationNetwork getNetwork() { return network; }
+        public Network getNetwork() { return network; }
         public DataNormalizer getNormalizer() { return normalizer; }
         public TrainingConfig getConfig() { return config; }
         public java.util.Map<String, Object> getMetrics() { return metrics; }
